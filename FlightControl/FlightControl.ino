@@ -11,7 +11,7 @@
 #include "Util.h"
 
 // Determines the max message / response length - 1
-#define TX_RX_BUFFER_SIZE  100
+#define TX_RX_BUFFER_SIZE  120
 
 
 // PROGRAM BEGIN / INITIALIZATION

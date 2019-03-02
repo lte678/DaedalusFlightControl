@@ -298,10 +298,12 @@ void CommandParser::handleInvert(char *response, const char *param, int buffersi
 	unsigned char idx = 0;
 	int read = false; // Was the current sequence of numbers already read?
 	for (unsigned int i = 0; i < strlen(param); i++) {
-		if (idx < 9 && !read && ( param[i] >= 48 && param[i] <= 57 || param[i] == '-' )) {
-			read = true;
-			sscanf(param + i, "%i", &matrix[idx]);
-			idx++;
+		if (param[i] >= '0' && param[i] <= '9' || param[i] == '-' ) {
+			if (idx < 9 && !read) {
+				read = true;
+				sscanf(param + i, "%i", &matrix[idx]);
+				idx++;
+			}
 		}
 		else {
 			read = false;
@@ -315,11 +317,45 @@ void CommandParser::handleInvert(char *response, const char *param, int buffersi
 	for (unsigned char i = 0; i < 3; i++) {
 		strncat(response, "[", buffersize);
 		for (unsigned char j = 0; j < 3; j++) {
-			dtostrf(matrix[ind(i, j)], 0, 2, floatStr);
+			unsigned char r1, r2, c1, c2;
+			switch (i) {
+			case 0:
+				r1 = 1;
+				r2 = 2;
+				break;
+			case 1:
+				r1 = 0;
+				r2 = 2;
+				break;
+			default:
+				r1 = 0;
+				r2 = 1;
+			}
+			
+			switch (j) {
+			case 0:
+				c1 = 1;
+				c2 = 2;
+				break;
+			case 1:
+				c1 = 0;
+				c2 = 2;
+				break;
+			default:
+				c1 = 0;
+				c2 = 1;
+			}
+
+			float inv = detMat2(matrix[ind(c1, r1)], matrix[ind(c1, r2)], matrix[ind(c2, r1)], matrix[ind(c2, r2)]) / det;
+
+			inv =  (i + j) % 2 ? -inv : inv;
+
+			dtostrf(inv, 0, 2, floatStr);
 			strncat(response, floatStr, buffersize);
 			if (j < 2) strncat(response, ", ", buffersize);
 		}
 		strncat(response, "]", buffersize);
+		if (i < 2) strncat(response, ", ", buffersize);
 	}
 	strncat(response, "]", buffersize);
 }
