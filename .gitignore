@@ -260,6 +260,6 @@ paket-files/
 __pycache__/
 *.pyc
 
-*.sln
+FlightControl\__vm\
 *.vcxproj
 *.vcxproj.filters
