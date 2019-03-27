@@ -18,7 +18,7 @@ const char statusTag[] PROGMEM = "status";
 const char sensorTag[] PROGMEM = "sensor";
 const char ramTag[] PROGMEM = "ram";
 const char errorsTag[] PROGMEM = "errors";
-const char chuteTag[] PROGMEM = "chute";
+const char chuteTag[] PROGMEM = "para";
 
 // The main command parser function
 void CommandParser::parse(char *command, char *response, int bufferSize) {
